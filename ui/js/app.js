@@ -36,7 +36,7 @@ $('#errorbox').hide()
   var aadhaar_no_phone_no = {
   	"7382537xxxxx": "915801xxxx",
   	"300000000000": "7276xxxxxx",
-	"<replace your aadhaar no here>": "<your phone number>",
+	"200000000000": "123456789",
   }
 
 
@@ -44,7 +44,7 @@ $('#errorbox').hide()
     window.signingIn = true;
     $('#errorbox').hide();
    // updateSignInButtonUI();
-    var phoneNumber = "+91" + aadhaar_no_phone_no[$('#aadhaar_no').val()];
+    var phoneNumber = "+358" + aadhaar_no_phone_no[$('#aadhaar_no').val()];
     //console.log(phoneNumber);
       var d = new Date();
       d.setTime(d.getTime() + (1*24*60*60*1000));      
