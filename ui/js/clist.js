@@ -14,7 +14,7 @@ $('.modal').modal();
 	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 	abi = JSON.parse('[{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"bytes32"}],"name":"bytes32ToString","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteForCandidate","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"contractOwner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"inputs":[{"name":"candidateNames","type":"bytes32[]"}],"payable":false,"type":"constructor"}]')
 	VotingContract = web3.eth.contract(abi);
-	contractInstance = VotingContract.at('0xa429963b1fda061eecf26a47ca7e7662edc7ac28');
+	contractInstance = VotingContract.at('0x8ffc1acc80dfed7a0d7971d6d2179cbe236e136c');
 	// candidates = {"Rama": "candidate-1", "Nick": "candidate-2", "Jose": "candidate-3"}
 
 
@@ -30,18 +30,18 @@ $('.modal').modal();
     return null;
 	}
 
-	var aadhaar_list = {
-		"300000000000" : "Akola",
-		"738253790005" : "Bhandara",
-		"200000000000" : "momo"
+	var employee_list = {
+		"10000000" : "Alice",
+		"20000000" : "Bob",
+		"30000000" : "Carol"
 	}
 
-	var aadhaar = readCookie('aadhaar');
+	var employee = readCookie('employee');
 
-	console.log(aadhaar);
-	var address = aadhaar_list[aadhaar];
+	console.log(employee);
+	var address = employee_list[employee];
 	console.log(address);
-	$('#loc_info').text('Location based on Aadhaar : '+ address)
+	$('#loc_info').text('Location based on employee : '+ address)
 
 	function disable() {
 			$('#vote1').addClass( "disabled" );
@@ -51,40 +51,40 @@ $('.modal').modal();
 		    
 		    //logout
 		    document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-		    document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+		    document.cookie = "employee=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
 		    window.location = '/app';
 
 
 	}
 
 	$('#vote1').click(function(){
-		contractInstance.voteForCandidate('Sanat', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Sanat');
+		contractInstance.voteForCandidate('Maiju Lattu', {from: web3.eth.accounts[0]}, function() {
+		    alert('vote submited to Maiju Lattu');
 		    disable();
-		    $('#loc_info').text('Vote submited successfully to Sanat')
+		    $('#loc_info').text('Vote submited successfully to Maiju Lattu')
 
 		});
 	})
 	$('#vote2').click(function(){
-		contractInstance.voteForCandidate('Aniket', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Aniket');
+		contractInstance.voteForCandidate('Pauliina Oksanen', {from: web3.eth.accounts[0]}, function() {
+		    alert('vote submited to Pauliina Oksanen');
 		     disable();
-		     $('#loc_info').text('Vote submited successfully to Aniket')
+		     $('#loc_info').text('Vote submited successfully to Pauliina Oksanen')
 		});
 	})
 	$('#vote3').click(function(){
-		contractInstance.voteForCandidate('Mandar', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Mandar');
+		contractInstance.voteForCandidate('Leila Toppila', {from: web3.eth.accounts[0]}, function() {
+		    alert('vote submited to Leila Toppila');
 		     disable();
 		      
-		      $('#loc_info').text('Vote submited successfully to Mandar')
+		      $('#loc_info').text('Vote submited successfully to Leila Toppila')
 		});
 	})
 	$('#vote4').click(function(){
-		contractInstance.voteForCandidate('Akshay', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Akshay');
+		contractInstance.voteForCandidate('Sofia Sallinen', {from: web3.eth.accounts[0]}, function() {
+		    alert('vote submited to Sofia Sallinen');
 		     disable();
-		     $('#loc_info').text('Vote submited successfully to Akshay')
+		     $('#loc_info').text('Vote submited successfully to Sofia Sallinen')
 		});
 	})
 });

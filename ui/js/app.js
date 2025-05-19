@@ -33,10 +33,10 @@ $('#errorbox').hide()
     //  updateSignInButtonUI();
     });
 
-  var aadhaar_no_phone_no = {
-  	"7382537xxxxx": "915801xxxx",
-  	"300000000000": "7276xxxxxx",
-	"200000000000": "123456789",
+  var employee_no_phone_no = {
+  	"10000000": "415777123",
+  	"20000000": "414698456",
+	  "30000000": "123456789",
   }
 
 
@@ -44,12 +44,12 @@ $('#errorbox').hide()
     window.signingIn = true;
     $('#errorbox').hide();
    // updateSignInButtonUI();
-    var phoneNumber = "+358" + aadhaar_no_phone_no[$('#aadhaar_no').val()];
+    var phoneNumber = "+358" + employee_no_phone_no[$('#employee_no').val()];
     //console.log(phoneNumber);
       var d = new Date();
       d.setTime(d.getTime() + (1*24*60*60*1000));      
       var expires = "expires="+ d.toUTCString();
-      document.cookie = 'aadhaar' + "=" + $('#aadhaar_no').val() + ";" + expires + ";path=/";
+      document.cookie = 'employee' + "=" + $('#employee_no').val() + ";" + expires + ";path=/";
 
     $('#verifyc').text('Enter verification code send to '+phoneNumber)
      var appVerifier = window.recaptchaVerifier;
@@ -63,7 +63,7 @@ $('#errorbox').hide()
            // updateSignInButtonUI();
             // $('.verification-code-form').show()
             // $('#hidepf').hide()
-            $('#enter_aadhaarno').hide()
+            $('#enter_employeeno').hide()
             $('#verify_otp_model').show()
             console.log('otp');
             
@@ -108,9 +108,9 @@ $(verifyotp).click(function(){
 
 
 $(getotp).click(function(){
-	if ($('#aadhaar_no').val()=="") {
+	if ($('#employee_no').val()=="") {
 		$('#errorbox').show()
-		$('#error').text('Please Enter Aadhaar No')
+		$('#error').text('Please Enter employee No')
 
     }
     else{

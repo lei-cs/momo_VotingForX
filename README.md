@@ -1,6 +1,6 @@
-# Aadhaar Voting
-Aadhaar Based voting system using blockchain technology
-Project implemented as part of Rajasthan Hackathron
+# Employee Voting
+Employee Based voting system using blockchain technology
+Project implemented as part of Blockchain Course
 
 ## Description
 
@@ -47,7 +47,7 @@ Step 2 - Creating Voting Smart Contract
 npm install solc
 ```
 
-Replace your aadhaar no and phone number for running project at https://github.com/sanattaori/techdot/blob/7814403250f8b042992c6d437d9f9db8f98f3729/ui/js/app.js#L39
+Replace your employee no and phone number for running project at https://github.com/sanattaori/techdot/blob/7814403250f8b042992c6d437d9f9db8f98f3729/ui/js/app.js#L39
 
 Step 3 - Testing in node console
 
@@ -117,7 +117,7 @@ https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10d
 
 ## Deployment
 
-The Aadhaar based voting system is developed to overcome the flaws of EVM system. So directly EVM will be replaced by touch screen interface having the great
+The employee based voting system is developed to overcome the flaws of EVM system. So directly EVM will be replaced by touch screen interface having the great
 user interface and high security.
 
 ## Authors
