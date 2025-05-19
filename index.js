@@ -92,10 +92,12 @@ app.get('/info', function(req, res){
 		 compiledCode = solc.compile(code)
 		 abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
 		 VotingContract = web3.eth.contract(abiDefinition)
-		 byteCode = compiledCode.contracts[':Voting'].bytecode
-		 deployedContract = VotingContract.new(['Sanat','Aniket','Mandar','Akshay'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
-		
-		contractInstance = VotingContract.at(deployedContract.address)
+		 //byteCode = compiledCode.contracts[':Voting'].bytecode
+		 //deployedContract = VotingContract.new([web3.fromAscii('Maiju Lattu'),web3.fromAscii('Pauliina Oksanen'),web3.fromAscii('Leila Toppila'),web3.fromAscii('Sofia Sallinen')],Math.floor(new Date('2025-05-20T00:00:00+03:00').getTime() / 1000), Math.floor(new Date('2025-05-21T23:59:59+03:00').getTime() / 1000), { data: byteCode, from: web3.eth.accounts[0], gas: 4700000 });
+		//console.log(JSON.stringify(abiDefinition, null, 2));
+		 const deployedAddress = '0x4e1f1c4a981eb5bfb0e2f26cc7176ce943821846';  
+
+		contractInstance = VotingContract.at(deployedAddress)
 
 		res.sendFile(path.join(__dirname, 'ui', 'clist.html'));
 	}
