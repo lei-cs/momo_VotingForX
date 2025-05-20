@@ -16,6 +16,9 @@ contract Voting {
   bytes32[] public candidateList;
    uint public startTime;
     uint public endTime;
+/* Record whether the address has voted
+*/
+mapping(address => bool) public hasVoted;
 
   /* This is the constructor which will be called once when you
   deploy the contract to the blockchain. When we deploy the contract,
@@ -39,7 +42,9 @@ constructor(bytes32[] candidateNames, uint _startTime, uint _endTime) public {
   function voteForCandidate(bytes32 candidate) public {
     require(now >= startTime && now <= endTime, "Voting is not allowed at this time.");
         require(validCandidate(candidate), "Invalid candidate.");
+        require(!hasVoted[msg.sender], "You have already voted.");
     votesReceived[candidate] += 1;
+    hasVoted[msg.sender] = true; //Record voting status
   }
 
   function validCandidate(bytes32 candidate) public view returns (bool) {
