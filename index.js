@@ -31,7 +31,7 @@ app.post('/login', function(req, res) {
     var hashedPassword = passwordHash.generate(password);
     console.log(hashedPassword);
     
-    if (username == "admin" && password == "password") {
+    if (username == "Carol" && password == "password") {
 
     	res.status(200).send({ message: hashedPassword});
 
@@ -95,7 +95,7 @@ app.get('/info', function(req, res){
 		 //byteCode = compiledCode.contracts[':Voting'].bytecode
 		 //deployedContract = VotingContract.new([web3.fromAscii('Maiju Lattu'),web3.fromAscii('Pauliina Oksanen'),web3.fromAscii('Leila Toppila'),web3.fromAscii('Sofia Sallinen')],Math.floor(new Date('2025-05-20T00:00:00+03:00').getTime() / 1000), Math.floor(new Date('2025-05-21T23:59:59+03:00').getTime() / 1000), { data: byteCode, from: web3.eth.accounts[0], gas: 4700000 });
 		//console.log(JSON.stringify(abiDefinition, null, 2));
-		 const deployedAddress = '0x9f1956a3e6a076417d8b8cdb1fcd4ec5a50ce46e';  
+		 const deployedAddress = '0x11c2911e27e10d7139404d761c8ad429f323eaef';  
 
 		contractInstance = VotingContract.at(deployedAddress)
 

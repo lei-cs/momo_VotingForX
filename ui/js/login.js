@@ -45,6 +45,7 @@ $(document).ready(function () {
 				    d.setTime(d.getTime() + (1*24*60*60*100));
 				    var expires = "expires="+ d.toUTCString();
 				    document.cookie = 'auth' + "=" + data.message + ";" + expires + ";path=/";
+					
 				    window.location = '/app';
 				},
 				statusCode: {
