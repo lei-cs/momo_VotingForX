@@ -1,15 +1,15 @@
-# Employee Voting
-Employee Based voting system using blockchain technology
-Project implemented as part of Blockchain Course
+# Employee Voting System for X Bank
+Employee-based voting system for X Bank using blockchain technology
+Project implemented as part of Introduction to Blockchain Course from Momo Group
 
 ## Description
 
-* The authority must login first with the provided session ID.
+* The employee must login first with the their ID and password.
 * The voter can now begin the process of voting with proper authentication through OTP(one time password) on the respective linked mobile number.
-* If the voter is valid then the system will check for for the voters age and the address to which he can give vote.
-* the voting pallete will be opned with  candidate names,their parties and logos.
+* If the voter is valid then the system will check for eligibility and the address to which he can give vote.
+* the voting pallete will be opned with candidate names, job positions and photos.
 * Now the voter can give his vote by clicking vote button.
-* one voter can give his vote only once,i.e after one time voting buttons are disabled and the vote is automatically loged out.
+* one voter can give her vote only once, i.e after one time voting buttons are disabled and the vote is automatically loged out.
 * Same process continiues for many more votters irrespective of their voting wards.
 
 ### Installing and Running Project
@@ -76,7 +76,8 @@ compiledCode.contracts[‘:Voting’].interface: interface of the contract (call
 > abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
 > VotingContract = web3.eth.contract(abiDefinition)
 > byteCode = compiledCode.contracts[':Voting'].bytecode
->deployedContract = VotingContract.new(['Sanat','Aniket','Mandar','Akshay'],{data: byteCode, from: web3.eth.accounts[0], gas: 4700000})
+> deployedContract = VotingContract.new([web3.fromAscii('Maiju Lattu'),web3.fromAscii('Pauliina Oksanen'),web3.fromAscii('Leila Toppila'),web3.fromAscii('Sofia Sallinen')], Math.floor(new Date('2025-05-19T00:00:00+03:00').getTime()/1000), Math.floor(new Date('2025-05-21T23:59:59+03:00').getTime()/1000), {data: byteCode, from: web3.eth.accounts[0], gas: 4700000});
+
 > deployedContract.address
 > contractInstance = VotingContract.at(deployedContract.address)
 deployedContract.address. When you have to interact with your contract, you need this deployed address and abi definition we talked about earlier.
@@ -103,8 +104,8 @@ https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10d
 
 ### Purpose of test
 
- * The authority login is to ensure security to prevent piracy,harresment and corruption from candidates standing in election.
- * OTP generation is to authenticate the right aadhar card owner.
+ * The authority login is to ensure security to prevent piracy, harresment and corruption from candidates standing in election.
+ * OTP generation is to authenticate the right employee.
  * button disabling and automatic logout is to prevent multiple voting by single candidate. 
 
 ### Screenshots
@@ -117,10 +118,11 @@ https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10d
 
 ## Deployment
 
-The employee based voting system is developed to overcome the flaws of EVM system. So directly EVM will be replaced by touch screen interface having the great
-user interface and high security.
+The employee based voting system is developed to overcome the flaws of EVM system. So directly EVM will be replaced by touch screen interface having the great user interface and high security.
 
 ## Authors
+* **Lei Yang**
+* **Mojun Jiang**
 
 * **Sanat Taori**
 * **Akshay Motghare**
