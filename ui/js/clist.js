@@ -15,7 +15,7 @@ $('.modal').modal();
 abi = JSON.parse('[{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"hasVoted","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"endTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"startTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteForCandidate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"candidateNames","type":"bytes32[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]');
 
 	VotingContract = web3.eth.contract(abi);
-	contractInstance = VotingContract.at('0x716674106074e3e815b3c892c45ab688512b5776');
+	contractInstance = VotingContract.at('0x96d4e61811dc5e1584bda22aca3049b515669ff0');
 	// candidates = {"Rama": "candidate-1", "Nick": "candidate-2", "Jose": "candidate-3"}
 
 function disableVotingButtons() {
@@ -25,36 +25,41 @@ function disableVotingButtons() {
   $('#vote4').addClass("disabled");
 }
 
-
 let startTime, endTime;
-
 web3.eth.defaultAccount = web3.eth.accounts[0];
 
 contractInstance.startTime.call((err, result) => {
   if (!err) {
     startTime = parseInt(result);
+
     contractInstance.endTime.call((err2, result2) => {
       if (!err2) {
         endTime = parseInt(result2);
+        const now = Math.floor(Date.now() / 1000); // current time in seconds
         const startDate = new Date(startTime * 1000);
         const endDate = new Date(endTime * 1000);
 
-       // $('#loc_info').parent().find('p').remove();
+        $('#loc_info').parent().append(
+          `<p>Voting time: ${startDate.toLocaleString()} — ${endDate.toLocaleString()}</p>`
+        );
 
-        contractInstance.hasVoted.call(web3.eth.defaultAccount, (err3, hasVoted) => {
-          if (!err3) {
-            if (hasVoted) {
-              disableVotingButtons();
-              $('#loc_info').parent().append('<p>You have already voted.</p>');
+        // Check if now is outside the time window
+        if (now < startTime || now > endTime) {
+          disableVotingButtons();
+        } else {
+          // Inside voting window, now check if already voted
+          contractInstance.hasVoted.call(web3.eth.defaultAccount, (err3, hasVoted) => {
+            if (!err3) {
+              if (hasVoted) {
+                disableVotingButtons();
+                $('#loc_info').parent().append('<p>You have already voted.</p>');
+              }
+              // else: buttons stay enabled
             } else {
-              $('#loc_info').parent().append(
-                `<p>Voting time: ${startDate.toLocaleString()} — ${endDate.toLocaleString()}</p>`
-              );
+              console.error('Error checking vote status:', err3);
             }
-          } else {
-            console.error('Error checking vote status:', err3);
-          }
-        });
+          });
+        }
       } else {
         console.error('Error getting endTime:', err2);
       }
@@ -63,8 +68,6 @@ contractInstance.startTime.call((err, result) => {
     console.error('Error getting startTime:', err);
   }
 });
-
-
 
 
 	//check cookie
