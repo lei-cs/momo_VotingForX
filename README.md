@@ -109,12 +109,12 @@ https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10d
  * button disabling and automatic logout is to prevent multiple voting by single candidate. 
 
 ### Screenshots
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/1.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/2.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/3.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/4.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/5.PNG)
-* ![](https://raw.githubusercontent.com/sanattaori/techdot/master/screenshot/gan.PNG)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/1.png?raw=true)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/2.png?raw=true)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/3.png?raw=true)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/4.png?raw=true)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/5.png?raw=true)
+* ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/gan.png?raw=true)
 
 ## Deployment
 
