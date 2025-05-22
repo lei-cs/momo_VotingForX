@@ -15,7 +15,7 @@ $('.modal').modal();
 abi = JSON.parse('[{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"hasVoted","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"totalVotesFor","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"endTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"validCandidate","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesReceived","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"startTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidateList","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteForCandidate","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"candidateNames","type":"bytes32[]"},{"name":"_startTime","type":"uint256"},{"name":"_endTime","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]');
 
 	VotingContract = web3.eth.contract(abi);
-	contractInstance = VotingContract.at('0x96d4e61811dc5e1584bda22aca3049b515669ff0');
+	contractInstance = VotingContract.at('0xf75f23f999d0eff3bd20cd87aa674c22978dfacd');
 	// candidates = {"Rama": "candidate-1", "Nick": "candidate-2", "Jose": "candidate-3"}
 
 function disableVotingButtons() {
@@ -26,7 +26,12 @@ function disableVotingButtons() {
 }
 
 let startTime, endTime;
-web3.eth.defaultAccount = web3.eth.accounts[0];
+var userAddress = readCookie("userAddress");
+if (!userAddress) {
+  alert("No Ethereum address found in cookie. Please login again.");
+  window.location = '/index'; 
+}
+web3.eth.defaultAccount = userAddress;
 
 contractInstance.startTime.call((err, result) => {
   if (!err) {
@@ -85,10 +90,10 @@ contractInstance.startTime.call((err, result) => {
 	var employee_list = {
 		"10000000" : "Alice",
 		"20000000" : "Bob",
-		"30000000" : "Carol"
+		"30000000" : "Carol",
 	}
 
-	var employee = readCookie('employee');
+	var employee = readCookie('employeeNo');
 
 	console.log(employee);
 	var address = employee_list[employee];
@@ -104,13 +109,14 @@ contractInstance.startTime.call((err, result) => {
 		    //logout
 		    document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
 		    document.cookie = "employee=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+			document.cookie = "userAddress=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		    window.location = '/app';
 
 
 	}
 
 	$('#vote1').click(function(){
-		contractInstance.voteForCandidate('Maiju Lattu', {from: web3.eth.accounts[0]}, function() {
+		contractInstance.voteForCandidate('Maiju Lattu', {from: userAddress}, function() {
 		    alert('vote submited to Maiju Lattu');
 		    disable();
 		    $('#loc_info').text('Vote submited successfully to Maiju Lattu')
@@ -118,14 +124,14 @@ contractInstance.startTime.call((err, result) => {
 		});
 	})
 	$('#vote2').click(function(){
-		contractInstance.voteForCandidate('Pauliina Oksanen', {from: web3.eth.accounts[0]}, function() {
+		contractInstance.voteForCandidate('Pauliina Oksanen', {from: userAddress}, function() {
 		    alert('vote submited to Pauliina Oksanen');
 		     disable();
 		     $('#loc_info').text('Vote submited successfully to Pauliina Oksanen')
 		});
 	})
 	$('#vote3').click(function(){
-		contractInstance.voteForCandidate('Leila Toppila', {from: web3.eth.accounts[0]}, function() {
+		contractInstance.voteForCandidate('Leila Toppila', {from: userAddress}, function() {
 		    alert('vote submited to Leila Toppila');
 		     disable();
 		      
@@ -133,7 +139,7 @@ contractInstance.startTime.call((err, result) => {
 		});
 	})
 	$('#vote4').click(function(){
-		contractInstance.voteForCandidate('Sofia Sallinen', {from: web3.eth.accounts[0]}, function() {
+		contractInstance.voteForCandidate('Sofia Sallinen', {from: userAddress}, function() {
 		    alert('vote submited to Sofia Sallinen');
 		     disable();
 		     $('#loc_info').text('Vote submited successfully to Sofia Sallinen')

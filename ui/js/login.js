@@ -16,18 +16,18 @@ $(document).ready(function () {
 	}
 
 	//error hide
-	$(messagebox).hide()
+	$('#messagebox').hide()
 
-	$(login).click(function(){
+	$('#login').click(function(){
 		if (($('#username').val()=="")) {
-			$(messagebox).show()
-			$(errormsg).text('Please Enter Username');
+			$('#messagebox').show()
+			$('#errormsg').text('Please Enter Username');
 		} else if (($('#password').val()=="")) {
-			$(messagebox).show()
-			$(errormsg).text('Please Enter valid Password');
+			$('#messagebox').show()
+			$('#errormsg').text('Please Enter valid Password');
 
 		} else {
-			$(messagebox).hide()
+			$('#messagebox').hide()
 			$.ajax({
 				url: "/login",
 				method: "post",
@@ -39,20 +39,20 @@ $(document).ready(function () {
 				}),
 				success: function (data) {
 					console.log(data.message);
-					$(messagebox).show()
-					$(errormsg).text('Redirecting...')
+					$('#messagebox').show()
+					$('#errormsg').text('Redirecting...')
 					var d = new Date();
 				    d.setTime(d.getTime() + (1*24*60*60*100));
 				    var expires = "expires="+ d.toUTCString();
 				    document.cookie = 'auth' + "=" + data.message + ";" + expires + ";path=/";
 					
-				    window.location = '/app';
+				    window.location = '/';
 				},
 				statusCode: {
 			        500: function() {
-			        	$(messagebox).show()
+			        	$('#messagebox').show()
 			        	console.log('error');
-			          	$(errormsg).text('Error Invalid Username/Password');
+			          	$('#errormsg').text('Error Invalid Username/Password');
 			        }
 			      }
 				

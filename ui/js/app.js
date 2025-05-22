@@ -34,10 +34,16 @@ $('#errorbox').hide()
     });
 
   var employee_no_phone_no = {
-  	"10000000": "415777123",
-  	"20000000": "414698456",
+  	"10000000": "123455555",
+  	"20000000": "123456789",
 	  "30000000": "123456789",
   }
+
+  var employee_no_account_index = {
+  "10000000": 0,
+  "20000000": 1,
+  "30000000": 2,
+};
 
 
   function onSignInSubmit() {
@@ -49,7 +55,7 @@ $('#errorbox').hide()
       var d = new Date();
       d.setTime(d.getTime() + (1*24*60*60*1000));      
       var expires = "expires="+ d.toUTCString();
-      document.cookie = 'employee' + "=" + $('#employee_no').val() + ";" + expires + ";path=/";
+document.cookie = 'employeeNo=' + $('#employee_no').val() + ";" + expires + ";path=/";
 
     $('#verifyc').text('Enter verification code send to '+phoneNumber)
      var appVerifier = window.recaptchaVerifier;
@@ -92,8 +98,11 @@ $(verifyotp).click(function(){
         var d = new Date();
     	d.setTime(d.getTime() + (1*24*60*60*1000));      
     	var expires = "expires="+ d.toUTCString();
-    	document.cookie = 'show' + "=" + user.uid + ";" + expires + ";path=/";
-    	window.location = '/info'
+    	var employeeNo = $('#employee_no').val();
+      document.cookie = 'show=' + user.uid + ";" + expires + ";path=/";
+      document.cookie = 'employeeNo=' + employeeNo + ";" + expires + ";path=/"; 
+      window.location = '/info';
+
 
       }).catch(function (error) {
         // User couldn't sign in (bad verification code?)

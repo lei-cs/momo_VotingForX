@@ -22,58 +22,65 @@ app.use("/", express.static("ui"));
 
 var username;
 var password;
+const users = {
+  "Alice": { password: "password1", accountIndex: 0 },
+  "Bob": { password: "password2", accountIndex: 1 },
+  "Carol": { password: "password3", accountIndex: 2 }
+};
 
 app.post('/login', function(req, res) {
-    
-	console.log(req.body);
-    username = req.body.username;
-    password = req.body.password;
-    var hashedPassword = passwordHash.generate(password);
-    console.log(hashedPassword);
-    
-    if (username == "Carol" && password == "password") {
-
-    	res.status(200).send({ message: hashedPassword});
-
-    } else {
-    	res.status(500).send({ message: 'error' });
-    }
+	const { username, password } = req.body;
+  const user = users[username];
+ if (user && user.password === password) {
+    const hashedPassword = passwordHash.generate(password);
+    res.cookie("auth", hashedPassword);
+    res.cookie("username", username); 
+    res.status(200).send({ message: hashedPassword });
+  } else {
+    res.status(500).send({ message: 'error' });
+  }
 });
 
 app.post('/auth', function(req, res) {
-	var cookie_pass = req.cookies['auth'];
-	if (passwordHash.verify('password', cookie_pass)) {
-		res.status(200).send({ message: hashedPassword});
-	} else {
-		res.status(500).send({ message: 'error' });
-	}
+    const cookie_pass = req.cookies['auth'];
+    const username = req.cookies['username'];
+    const user = users[username];
+
+    if (user && passwordHash.verify(user.password, cookie_pass)) {
+        res.status(200).send({ message: 'OK' });
+    } else {
+        res.status(500).send({ message: 'error' });
+    }
 });
 
-app.get('/',function(req,res){
-	var cookie_pass = req.cookies['auth'];
-	if (passwordHash.verify('password', cookie_pass)) {
-		res.sendFile(path.join(__dirname, 'ui', 'app.html'));
-	} else {
-		console.log('ok');
-	}
+app.get('/', function(req, res) {
+    const cookie_pass = req.cookies['auth'];
+    const username = req.cookies['username'];
+    const user = users[username];
+
+    if (user && passwordHash.verify(user.password, cookie_pass)) {
+        res.sendFile(path.join(__dirname, 'ui', 'app.html'));
+    } else {
+        res.sendFile(path.join(__dirname, 'ui', 'index.html')); 
+    }
 });
 
-app.get('/app', function(req, res){
-	var cookie_pass = req.cookies['auth'];
-	var cookie_otp = req.cookies['show'];
 
-	if (passwordHash.verify('password', cookie_pass) && cookie_otp != null) {
-		//res.sendFile(path.join(__dirname, 'ui', 'clist.html'));
-		res.redirect('/info');
-		
+app.get('/app', function(req, res) {
+    const cookie_pass = req.cookies['auth'];
+    const username = req.cookies['username'];
+    const cookie_otp = req.cookies['show'];
+    const user = users[username];
 
-	} else if (cookie_otp == null && passwordHash.verify('password', cookie_pass)) {
-		res.sendFile(path.join(__dirname, 'ui', 'app.html'));
-	}
-	else {
-		res.redirect('/');
-	}
-	
+    if (user && passwordHash.verify(user.password, cookie_pass)) {
+        if (cookie_otp) {
+            res.redirect('/info');
+        } else {
+            res.sendFile(path.join(__dirname, 'ui', 'app.html'));
+        }
+    } else {
+        res.redirect('/');
+    }
 });
 
 // app.post('/getaddress',function(req,res){
@@ -83,25 +90,32 @@ app.get('/app', function(req, res){
 app.get('/info', function(req, res){
 	var cookie_pass = req.cookies['auth'];
 	var cookie_otp = req.cookies['show'];
-	if (cookie_pass == null || cookie_pass == '' || cookie_otp == null || cookie_otp == '') {
-		res.redirect('/app');
-	} else {
-		web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-		 code = fs.readFileSync('Voting.sol').toString()
+	const username = req.cookies['username'];
+    const user = users[username];
+	const employeeNo = req.cookies['employeeNo'];
+	const accountIndexMap = {
+  			"10000000": 0,
+ 	 		"20000000": 1,
+  			"30000000": 2,
 
-		 compiledCode = solc.compile(code)
-		 abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
-		 VotingContract = web3.eth.contract(abiDefinition)
-		 //byteCode = compiledCode.contracts[':Voting'].bytecode
-		 //deployedContract = VotingContract.new([web3.fromAscii('Maiju Lattu'),web3.fromAscii('Pauliina Oksanen'),web3.fromAscii('Leila Toppila'),web3.fromAscii('Sofia Sallinen')],Math.floor(new Date('2025-05-20T00:00:00+03:00').getTime() / 1000), Math.floor(new Date('2025-05-21T23:59:59+03:00').getTime() / 1000), { data: byteCode, from: web3.eth.accounts[0], gas: 4700000 });
-		//console.log(JSON.stringify(abiDefinition, null, 2));
-		 const deployedAddress = '0x96d4e61811dc5e1584bda22aca3049b515669ff0';  
+		};
+	if (!cookie_pass || !cookie_otp || !user) {
+        return res.redirect('/app');
+    }
 
-		contractInstance = VotingContract.at(deployedAddress)
+	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    code = fs.readFileSync('Voting.sol').toString();
+    compiledCode = solc.compile(code);
+    abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface);
+    VotingContract = web3.eth.contract(abiDefinition);
 
-		res.sendFile(path.join(__dirname, 'ui', 'clist.html'));
-	}
-	
+    const deployedAddress = '0xf75f23f999d0eff3bd20cd87aa674c22978dfacd';
+    contractInstance = VotingContract.at(deployedAddress);
+    const accountIndex = accountIndexMap[employeeNo];
+	const userAddress = web3.eth.accounts[accountIndex];
+    res.cookie("userAddress", userAddress); 
+
+    res.sendFile(path.join(__dirname, 'ui', 'clist.html'));
 });
 
 
