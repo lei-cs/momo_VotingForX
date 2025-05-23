@@ -1,22 +1,24 @@
 # Employee Voting System for X Bank
-Employee-based voting system for X Bank using blockchain technology
+Employee-based voting system for X Bank using blockchain technology.
+
 Project implemented as part of Introduction to Blockchain Course from Momo Group
 
 ## Description
 
-* The employee must login first with the their ID and password.
-* The voter can now begin the process of voting with proper authentication through OTP(one time password) on the respective linked mobile number.
+* The employee must log in first with their username and password.
+* The voter can now begin the process of voting with proper authentication through OTP (one time password) on the respective linked mobile number.
 * If the voter is valid then the system will check for eligibility and the address to which he can give vote.
-* the voting pallete will be opned with candidate names, job positions and photos.
+* The voting process will be opened with candidate names, job positions and photos.
 * Now the voter can give his vote by clicking vote button.
-* one voter can give her vote only once, i.e after one time voting buttons are disabled and the vote is automatically loged out.
-* Same process continiues for many more votters irrespective of their voting wards.
+* One voter can give her vote only once, i.e after one-time voting buttons are disabled and the vote is automatically logged out.
+* Same process continues for many more voters irrespective of their voting wards.
+
 
 ### Installing and Running Project
 
 Clone Project
 ```
-git clone git@github.com:sanattaori/techdot.git && cd techdot
+git clone https://github.com/lei-cs/momo_VotingForX.git && cd momo_VotingForX
 ```
 Install Dependencies
 ```
@@ -26,19 +28,18 @@ Running Project
 ```
 node index.js
 ```
-If dependency problem occurs delete package.json, Run
+If a dependency problem occurs delete package.json, Run
 ```
 npm init
 ```
 Again Install dependencies and run project.
 
-
 ### Running Project
 Step 1 - Setting up Environment
-Instead of developing the app against the live Ethereum blockchain, we have used an in-memory blockchain (think of it as a blockchain simulator) called testrpc.
+Instead of developing the app against the live Ethereum blockchain, we have used an in-memory blockchain (think of it as a blockchain simulator) called Ganache.
 
 ```
-npm install ethereumjs-testrpc web3
+npm install ganache-cli -g web3
 ```
 
 Step 2 - Creating Voting Smart Contract
@@ -47,66 +48,34 @@ Step 2 - Creating Voting Smart Contract
 npm install solc
 ```
 
-Replace your employee no and phone number for running project at https://github.com/sanattaori/techdot/blob/7814403250f8b042992c6d437d9f9db8f98f3729/ui/js/app.js#L39
+Step 3 - Firebase Setup
+Go to https://console.firebase.google.com and create a new Firebase project.
 
-Step 3 - Testing in node console
+In your project directory, update the Firebase configuration block at: ./ui/js/app.html lines 14–26 with the configuration from your new Firebase project (API key, project ID, etc.)
 
-Not required just for testing in node console-
-After writing our smart contract, we'll use Web3js to deploy our app and interact with it
+In the file ./ui/js/app.js, update the employee number to phone number mapping at lines 36–40 to reflect valid test numbers linked to your Firebase account.
+
+Step 4 - Deploy the smart contract
+You can modify Voting time window in deploy.js#L20-21
+
 ```
-$ node
-> Web3 = require('web3')
-> web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-Then ensure Web3js is initalized and can query all accounts on the blockchain
-
-> web3.eth.accounts
-Lastly, compile the contract by loading the code from Voting.sol in to a string variable and compiling it
-
-> code = fs.readFileSync('Voting.sol').toString()
-> solc = require('solc')
-> compiledCode = solc.compile(code)
+$ node deploy.js
 ```
-testrpc creates 10 test accounts to play with automatically. These accounts come preloaded with 100 (fake) ethers.
 
-Deploy the contract!
+Paste the adderess to ui/js/clist.js line 18
 
-dCode.contracts[‘:Voting’].bytecode: bytecode which will be deployed to the blockchain.
-compiledCode.contracts[‘:Voting’].interface: interface of the contract (called abi) which tells the contract user what methods are available in the contract.
-```
-> abiDefinition = JSON.parse(compiledCode.contracts[':Voting'].interface)
-> VotingContract = web3.eth.contract(abiDefinition)
-> byteCode = compiledCode.contracts[':Voting'].bytecode
-> deployedContract = VotingContract.new([web3.fromAscii('Maiju Lattu'),web3.fromAscii('Pauliina Oksanen'),web3.fromAscii('Leila Toppila'),web3.fromAscii('Sofia Sallinen')], Math.floor(new Date('2025-05-19T00:00:00+03:00').getTime()/1000), Math.floor(new Date('2025-05-21T23:59:59+03:00').getTime()/1000), {data: byteCode, from: web3.eth.accounts[0], gas: 4700000});
+Step 5 - Interacting with the Contract via the Nodejs Console
 
-> deployedContract.address
-> contractInstance = VotingContract.at(deployedContract.address)
-deployedContract.address. When you have to interact with your contract, you need this deployed address and abi definition we talked about earlier.
-```
-Step 4 - Interacting with the Contract via the Nodejs Console
-```
 > contractInstance.totalVotesFor.call('Sanat').toLocaleString()
 '2'
 ```
 
-### For TypeError: Cannot read property ':Voting' of undefined :
-Make sure you have ganache-cli
-```
-sudo npm install ganache-cli -g
-```
-copy address of first account
-```
-$ ganache-cli
-```
-Paste this adderess to 
-ui/js/clist.js line 17
-https://github.com/sanattaori/techdot/blob/cecabc1917965ed7404e4c444b7572c97e10dcf9/ui/js/clist.js#L17
-
-
 ### Purpose of test
 
- * The authority login is to ensure security to prevent piracy, harresment and corruption from candidates standing in election.
+ * The authority login is to ensure security to prevent piracy, harassment and corruption from candidates standing in election.
  * OTP generation is to authenticate the right employee.
- * button disabling and automatic logout is to prevent multiple voting by single candidate. 
+ * Button disabling and automatic logout is to prevent multiple voting by single candidate. 
+
 
 ### Screenshots
 * ![](https://github.com/lei-cs/momo_VotingForX/blob/master/screenshot/1.png?raw=true)
