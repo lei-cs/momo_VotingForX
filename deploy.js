@@ -18,7 +18,7 @@ const VotingContract = web3.eth.contract(abiDefinition);
 
 // Set voting start and end times
 const startTime = Math.floor(new Date('2025-05-22T00:00:00+03:00').getTime() / 1000);
-const endTime = Math.floor(new Date('2025-05-22T23:59:59+03:00').getTime() / 1000);
+const endTime = Math.floor(new Date('2025-05-31T23:59:59+03:00').getTime() / 1000);
 
 // Deploy contract
 const deployedContract = VotingContract.new(
